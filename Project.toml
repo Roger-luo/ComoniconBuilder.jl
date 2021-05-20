@@ -3,6 +3,10 @@ uuid = "0acea522-3a8c-4b93-9211-1fc67cbf95d9"
 authors = ["Roger-Luo <rogerluo.rl18@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+ComoniconOptions = "a25bc8ac-9d24-42b2-8edd-3d267ec19fc5"
+PackageCompiler = "9b87118b-4619-50d2-8e1e-99f35a4d4d9d"
+
 [compat]
 julia = "1.6.1"
 

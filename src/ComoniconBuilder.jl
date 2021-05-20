@@ -1,5 +1,9 @@
 module ComoniconBuilder
 
-# Write your package code here.
+using ComoniconOptions
+using PackageCompiler
+
+include("install.jl")
+include("build.jl")
 
 end
