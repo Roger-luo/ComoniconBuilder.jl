@@ -343,7 +343,7 @@ function write_path(rcfile, yes::Bool = false, env = ENV)
     script = []
     msg = "cannot detect $(PATH.default_julia_bin()) in PATH, do you want to add it in PATH?"
 
-    if !contain_comonicon_path(rcfile, env) && Tools.prompt(msg, yes)
+    if !contain_comonicon_path(rcfile, env) && prompt(msg, yes)
         push!(
             script,
             """
@@ -356,7 +356,7 @@ function write_path(rcfile, yes::Bool = false, env = ENV)
     end
 
     msg = "cannot detect $(PATH.default_julia_fpath()) in FPATH, do you want to add it in FPATH?"
-    if !contain_comonicon_fpath(rcfile, env) && Tools.prompt(msg, yes)
+    if !contain_comonicon_fpath(rcfile, env) && prompt(msg, yes)
         push!(
             script,
             """
