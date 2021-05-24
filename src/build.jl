@@ -1,38 +1,38 @@
 function build_sysimg(
     m::Module,
-    configs::ComoniconOptions.Comonicon;
+    options::ComoniconOptions.Comonicon;
     # allow override these two options
-    incremental = configs.sysimg.incremental,
-    filter_stdlibs = configs.sysimg.filter_stdlibs,
-    cpu_target = configs.sysimg.cpu_target,
+    incremental = options.sysimg.incremental,
+    filter_stdlibs = options.sysimg.filter_stdlibs,
+    cpu_target = options.sysimg.cpu_target,
 )
-    lib = pkgdir(m, configs.sysimg.path, "lib")
+    lib = pkgdir(m, options.sysimg.path, "lib")
     if !ispath(lib)
         @info "creating library path: $lib"
         mkpath(lib)
     end
 
     @info "compile under project: $(pkgdir(m))"
-    @info configs.sysimg
+    @info options.sysimg
 
-    if incremental != configs.sysimg.incremental
+    if incremental != options.sysimg.incremental
         @info "incremental override to $incremental"
     end
 
-    if filter_stdlibs != configs.sysimg.filter_stdlibs
+    if filter_stdlibs != options.sysimg.filter_stdlibs
         @info "filter_stdlibs override to $filter_stdlibs"
     end
 
-    if cpu_target != configs.sysimg.cpu_target
+    if cpu_target != options.sysimg.cpu_target
         @info "cpu_target override to $cpu_target"
     end
 
-    exec_file = map(x -> pkgdir(m, x), configs.sysimg.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x), configs.sysimg.precompile.statements_file)
+    exec_file = map(x -> pkgdir(m, x), options.sysimg.precompile.execution_file)
+    stmt_file = map(x -> pkgdir(m, x), options.sysimg.precompile.statements_file)
 
     create_sysimage(
         nameof(m);
-        sysimage_path = joinpath(lib, PATH.sysimg(configs.name)),
+        sysimage_path = joinpath(lib, PATH.sysimg(options.name)),
         incremental = incremental,
         filter_stdlibs = filter_stdlibs,
         project = pkgdir(m),
@@ -44,101 +44,101 @@ function build_sysimg(
     return
 end
 
-function build_application(m::Module, configs::ComoniconOptions.Comonicon)
-    build_dir = pkgdir(m, configs.application.path, configs.name)
+function build_application(m::Module, options::ComoniconOptions.Comonicon)
+    build_dir = pkgdir(m, options.application.path, options.name)
     if !ispath(build_dir)
         @info "creating build path: $build_dir"
         mkpath(build_dir)
     end
 
-    @info "application options: " configs.application
+    @info "application options: " options.application
 
-    exec_file = map(x -> pkgdir(m, x), configs.application.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x), configs.application.precompile.statements_file)
+    exec_file = map(x -> pkgdir(m, x), options.application.precompile.execution_file)
+    stmt_file = map(x -> pkgdir(m, x), options.application.precompile.statements_file)
 
     create_app(
         pkgdir(m),
         build_dir;
-        app_name = configs.name,
+        app_name = options.name,
         precompile_execution_file = exec_file,
         precompile_statements_file = stmt_file,
-        incremental = configs.application.incremental,
-        filter_stdlibs = configs.application.filter_stdlibs,
+        incremental = options.application.incremental,
+        filter_stdlibs = options.application.filter_stdlibs,
         force = true,
-        cpu_target = configs.application.cpu_target,
-        c_driver_program = get_c_driver_program(configs.application),
+        cpu_target = options.application.cpu_target,
+        c_driver_program = get_c_driver_program(options.application),
     )
 
-    if configs.install.completion
+    if options.install.completion
         @info "generating completion scripts"
-        build_completion(m, configs)
+        build_completion(m, options)
     end
     return
 end
 
-function get_c_driver_program(configs::ComoniconOptions.Application)
+function get_c_driver_program(options::ComoniconOptions.Application)
     default_c_driver_program = pkgdir(PackageCompiler, "src", "embedding_wrapper.c")
-    return if isnothing(configs.c_driver_program)
+    return if isnothing(options.c_driver_program)
         default_c_driver_program
     else
-        configs.c_driver_program
+        options.c_driver_program
     end
 end
 
 
-function build_tarball(m::Module, configs::ComoniconOptions.Comonicon)
-    build_tarball_app(m, configs)
-    build_tarball_sysimg(m, configs)
+function build_tarball(m::Module, options::ComoniconOptions.Comonicon)
+    build_tarball_app(m, options)
+    build_tarball_sysimg(m, options)
     return
 end
 
-function build_tarball_app(m::Module, configs::ComoniconOptions.Comonicon)
-    isnothing(configs.application) && return
+function build_tarball_app(m::Module, options::ComoniconOptions.Comonicon)
+    isnothing(options.application) && return
     @info "building application"
-    build_application(m, configs)
+    build_application(m, options)
     # pack tarball
-    tarball = tarball_name(m, configs.name; application = true)
+    tarball = tarball_name(m, options.name; application = true)
     @info "creating application tarball $tarball"
-    cd(pkgdir(m, configs.application.path)) do
-        run(`tar -czvf $tarball $(configs.name)`)
+    cd(pkgdir(m, options.application.path)) do
+        run(`tar -czvf $tarball $(options.name)`)
     end
     return
 end
 
-function build_tarball_sysimg(m::Module, configs::ComoniconOptions.Comonicon)
-    isnothing(configs.sysimg) && return
+function build_tarball_sysimg(m::Module, options::ComoniconOptions.Comonicon)
+    isnothing(options.sysimg) && return
 
     @info "building system image"
-    build_sysimg(m, configs)
+    build_sysimg(m, options)
     # pack tarball
-    tarball = tarball_name(m, configs.name)
+    tarball = tarball_name(m, options.name)
     @info "creating system image tarball $tarball"
-    cd(pkgdir(m, configs.sysimg.path)) do
+    cd(pkgdir(m, options.sysimg.path)) do
         run(`tar -czvf $tarball lib`)
     end
     return
 end
 
-function download_sysimg(m::Module, configs::ComoniconOptions.Comonicon)
-    url = sysimg_url(m, configs)
+function download_sysimg(m::Module, options::ComoniconOptions.Comonicon)
+    url = sysimg_url(m, options)
     PlatformEngines.probe_platform_engines!()
 
     try
         tarball = download(url)
-        path = pkgdir(m, configs.sysimg.path)
+        path = pkgdir(m, options.sysimg.path)
         unpack(tarball, path)
         # NOTE: sysimg won't be shared, so we can just remove it
         isfile(tarball) && rm(tarball)
     catch e
         @warn "fail to download $url, building the system image locally"
         # force incremental build
-        build_sysimg(m, configs; incremental = true, filter_stdlibs = false, cpu_target = "native")
+        build_sysimg(m, options; incremental = true, filter_stdlibs = false, cpu_target = "native")
     end
     return
 end
 
-function build_completion(m::Module, configs::ComoniconOptions.Comonicon)
-    completion_dir = pkgdir(m, configs.application.path, configs.name, "completions")
+function build_completion(m::Module, options::ComoniconOptions.Comonicon)
+    completion_dir = pkgdir(m, options.application.path, options.name, "completions")
     if !ispath(completion_dir)
         @info "creating path: $completion_dir"
         mkpath(completion_dir)
@@ -152,16 +152,16 @@ function build_completion(m::Module, configs::ComoniconOptions.Comonicon)
     return
 end
 
-function sysimg_url(mod::Module, configs::ComoniconOptions.Comonicon)
-    name = configs.name
-    host = configs.download.host
+function sysimg_url(mod::Module, options::ComoniconOptions.Comonicon)
+    name = options.name
+    host = options.download.host
 
     if host == "github.com"
         url =
             "https://github.com/" *
-            configs.download.user *
+            options.download.user *
             "/" *
-            configs.download.repo *
+            options.download.repo *
             "/releases/download/"
     else
         error("host $host is not supported, please open an issue at $COMONICON_URL")
@@ -249,7 +249,7 @@ function completion_script(sh::String, m::Module)
     main = m.CASTED_COMMANDS["main"]
 
     if sh == "zsh"
-        return CodeGen.codegen(ZSHCompletionCtx(), main)
+        return emit_zshcompletion(main)
     else
         @warn(
             "$sh autocompletion is not supported, " *
@@ -257,17 +257,6 @@ function completion_script(sh::String, m::Module)
         )
     end
     return
-end
-
-"""
-    write([io], cmd::EntryCommand)
-
-Write the generated CLI script into a Julia script file.
-"""
-function Base.write(io::IO, x::CLIEntry)
-    println(io, "#= generated by Comonicon =#")
-    println(io, prettify(emit_expr(x)))
-    println(io, "command_main()")
 end
 
 """

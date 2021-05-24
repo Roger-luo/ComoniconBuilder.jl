@@ -3,7 +3,7 @@ module ComoniconBuilder
 using Logging
 using ComoniconTypes
 using ComoniconOptions
-using ComoniconTargetExpr
+using ComoniconZSHCompletion: emit_zshcompletion
 using PackageCompiler
 
 @static if VERSION < v"1.7-"
