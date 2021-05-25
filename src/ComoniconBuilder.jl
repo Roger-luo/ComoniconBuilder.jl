@@ -1,5 +1,6 @@
 module ComoniconBuilder
 
+using Libdl
 using Logging
 using ComoniconTypes
 using ComoniconOptions
@@ -19,6 +20,7 @@ using PackageCompiler
     end
 end
 
+include("utils.jl")
 include("install.jl")
 include("build.jl")
 

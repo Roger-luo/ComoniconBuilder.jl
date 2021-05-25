@@ -1,22 +1,3 @@
-prompt(msg, yes::Bool = false) = prompt(stdin, msg, yes)
-
-function prompt(io::IO, msg, yes::Bool = false)
-    print(msg)
-
-    if yes
-        println(" Yes.")
-    else
-        print(" [Y/n] ")
-        run(`stty raw`)
-        input = read(io, Char)
-        run(`stty cooked`)
-        println()
-        input in ['Y', 'y', '\n', '\r'] || return false
-    end
-
-    return true
-end
-
 function install(m::Module; kw...)
     options = read_options(m; kw...)
     return install(m, options)
@@ -94,7 +75,7 @@ function install(m::Module, options::ComoniconOptions.Comonicon)
 end
 
 "install a script as the CLI"
-function install_script(m::Module, options::ComoniconOptions.Comonicon)
+function install_script(m::Module, options::ComoniconOptions.Comonicon; project=pkgdir(m))
     bin = expanduser(joinpath(options.install.path, "bin"))
     shadow = joinpath(bin, options.name * ".jl")
 
@@ -102,12 +83,13 @@ function install_script(m::Module, options::ComoniconOptions.Comonicon)
         sysimg = nothing
     else
         download_sysimg(m, options)
-        sysimg = pkgdir(m, options.sysimg.path, "lib", PATH.sysimg(options.name))
+        sysimg = pkgdir(m, options.sysimg.path, "lib", sysimg(options.name))
     end
 
     shell_script = cmd_script(
         m,
         shadow;
+        project,
         sysimg = sysimg,
         compile = options.install.compile,
         optimize = options.install.optimize,
@@ -142,13 +124,12 @@ function install_script(m::Module, options::ComoniconOptions.Comonicon)
     return
 end
 
-function install_completion(m::Module, options::ComoniconOptions.Comonicon)
+function install_completion(m::Module, options::ComoniconOptions.Comonicon, shell=detect_shell())
     completions_dir = expanduser(joinpath(options.install.path, "completions"))
-    sh = detect_shell()
-    sh === nothing && return
+    isnothing(shell) && return
 
-    @info "generating auto-completion script for $sh"
-    script = completion_script(sh, m)
+    @info "generating auto-completion script for $shell"
+    script = completion_script(shell, m)
     script === nothing && return
 
     if !ispath(completions_dir)
