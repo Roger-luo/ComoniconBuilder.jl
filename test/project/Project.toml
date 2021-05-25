@@ -1,0 +1,19 @@
+name = "TestProject"
+uuid = "0acea522-3a8c-4b93-9211-1fc67cbf95d2"
+authors = ["Roger-Luo <rogerluo.rl18@gmail.com> and contributors"]
+version = "0.1.0"
+
+[deps]
+ComoniconBuilder = "0acea522-3a8c-4b93-9211-1fc67cbf95d9"
+ComoniconOptions = "a25bc8ac-9d24-42b2-8edd-3d267ec19fc5"
+ComoniconTestUtils = "53b67e40-53a7-4335-973f-e3e901fe4865"
+ComoniconTypes = "d0eb39ce-029e-40d1-add6-e32b3165f6a3"
+
+[compat]
+julia = "1.6.1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

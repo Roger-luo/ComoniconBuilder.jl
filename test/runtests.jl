@@ -104,3 +104,8 @@ end
     @test isfile(joinpath(usr_dir, "bin", "test.jl"))
     rm(usr_dir; recursive=true)    
 end
+
+using Pkg
+Pkg.activate(joinpath(test_dir, "project"))
+Pkg.develop(path=pkgdir(ComoniconBuilder))
+Pkg.test()
