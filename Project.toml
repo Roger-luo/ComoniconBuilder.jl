@@ -1,7 +1,7 @@
 name = "ComoniconBuilder"
 uuid = "0acea522-3a8c-4b93-9211-1fc67cbf95d9"
 authors = ["Roger-Luo <rogerluo.rl18@gmail.com> and contributors"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 ComoniconOptions = "a25bc8ac-9d24-42b2-8edd-3d267ec19fc5"
@@ -20,8 +20,8 @@ PackageCompiler = "1"
 julia = "1.6.1"
 
 [extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["Test", "Pkg"]
