@@ -5,7 +5,6 @@ version = "0.1.1"
 
 [deps]
 ComoniconOptions = "a25bc8ac-9d24-42b2-8edd-3d267ec19fc5"
-ComoniconTestUtils = "53b67e40-53a7-4335-973f-e3e901fe4865"
 ComoniconTypes = "d0eb39ce-029e-40d1-add6-e32b3165f6a3"
 ComoniconZSHCompletion = "dcf03e4a-d036-4ede-96c9-024e9e9eed12"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
@@ -20,8 +19,9 @@ PackageCompiler = "1"
 julia = "1.6.1"
 
 [extras]
+ComoniconTestUtils = "53b67e40-53a7-4335-973f-e3e901fe4865"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "Pkg"]
+test = ["Test", "Pkg", "ComoniconTestUtils"]
