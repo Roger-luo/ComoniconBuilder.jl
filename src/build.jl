@@ -241,7 +241,7 @@ function cmd_script(
 
     push!(script, "-O$optimize")
     push!(script, "--startup-file=no")
-    push!(script, "-- $shadow \$@")
+    push!(script, "-- $shadow \"\$@\"")
 
     return join(script, " \\\n    ")
 end
