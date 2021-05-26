@@ -121,19 +121,21 @@ end
 
 function download_sysimg(m::Module, options::ComoniconOptions.Comonicon)
     url = sysimg_url(m, options)
-    PlatformEngines.probe_platform_engines!()
 
     try
-        tarball = download(url)
-        path = pkgdir(m, options.sysimg.path)
-        unpack(tarball, path)
-        # NOTE: sysimg won't be shared, so we can just remove it
-        isfile(tarball) && rm(tarball)
+        if !isnothing(url)
+            tarball = download(url)
+            path = pkgdir(m, options.sysimg.path)
+            unpack(tarball, path)
+            # NOTE: sysimg won't be shared, so we can just remove it
+            isfile(tarball) && rm(tarball)
+            return
+        end
     catch e
         @warn "fail to download $url, building the system image locally"
         # force incremental build
-        build_sysimg(m, options; incremental = true, filter_stdlibs = false, cpu_target = "native")
     end
+    build_sysimg(m, options; incremental = true, filter_stdlibs = false, cpu_target = "native")
     return
 end
 
@@ -154,6 +156,7 @@ end
 
 function sysimg_url(mod::Module, options::ComoniconOptions.Comonicon)
     name = options.name
+    isnothing(options.download) && return
     host = options.download.host
 
     if host == "github.com"

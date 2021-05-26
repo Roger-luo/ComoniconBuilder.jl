@@ -80,17 +80,17 @@ function install_script(m::Module, options::ComoniconOptions.Comonicon; project=
     shadow = joinpath(bin, options.name * ".jl")
 
     if isnothing(options.sysimg)
-        sysimg = nothing
+        sysimg_path = nothing
     else
         download_sysimg(m, options)
-        sysimg = pkgdir(m, options.sysimg.path, "lib", sysimg(options.name))
+        sysimg_path = pkgdir(m, options.sysimg.path, "lib", sysimg(options.name))
     end
 
     shell_script = cmd_script(
         m,
         shadow;
         project,
-        sysimg = sysimg,
+        sysimg = sysimg_path,
         compile = options.install.compile,
         optimize = options.install.optimize,
     )
