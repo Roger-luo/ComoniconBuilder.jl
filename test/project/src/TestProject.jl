@@ -1,9 +1,18 @@
 module TestProject
 
-using ComoniconTestUtils
+using ComoniconTypes
 
 const CASTED_COMMANDS = Dict(
-    "main" => rand_command()
+    "main" => Entry(;
+        version=v"1.2.0",
+        root=LeafCommand(;
+            fn=sin,
+            name="sin",
+            args=Argument[
+                Argument(;name="x", type=Float64),
+            ]
+        )
+    )
 )
 
 end

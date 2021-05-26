@@ -25,3 +25,15 @@ options = ComoniconOptions.Comonicon(
     @test isfile(joinpath(usr_dir, "bin", "test.jl"))
     rm(usr_dir; recursive=true)
 end
+
+options = ComoniconOptions.Comonicon(
+    name="test",
+    install=ComoniconOptions.Install(
+        path=usr_dir,
+    ),
+    sysimg=ComoniconOptions.SysImg(;)
+)
+
+# empty!(ARGS)
+# push!(ARGS, "sysimg")
+# install(TestProject, options)

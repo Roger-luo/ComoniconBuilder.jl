@@ -27,12 +27,12 @@ function build_sysimg(
         @info "cpu_target override to $cpu_target"
     end
 
-    exec_file = map(x -> pkgdir(m, x), options.sysimg.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x), options.sysimg.precompile.statements_file)
+    exec_file = map(x -> pkgdir(m, x)::String, options.sysimg.precompile.execution_file)
+    stmt_file = map(x -> pkgdir(m, x)::String, options.sysimg.precompile.statements_file)
 
     create_sysimage(
         nameof(m);
-        sysimage_path = joinpath(lib, PATH.sysimg(options.name)),
+        sysimage_path = joinpath(lib, sysimg(options.name)),
         incremental = incremental,
         filter_stdlibs = filter_stdlibs,
         project = pkgdir(m),
