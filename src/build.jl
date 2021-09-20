@@ -53,8 +53,8 @@ function build_application(m::Module, options::ComoniconOptions.Comonicon)
 
     @info "application options: " options.application
 
-    exec_file = map(x -> pkgdir(m, x), options.application.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x), options.application.precompile.statements_file)
+    exec_file = map(x -> pkgdir(m, x)::String, options.application.precompile.execution_file)
+    stmt_file = map(x -> pkgdir(m, x)::String, options.application.precompile.statements_file)
 
     create_app(
         pkgdir(m),
