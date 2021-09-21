@@ -178,9 +178,9 @@ end
 
 function tarball_name(m::Module, name::String; application::Bool = false)
     if application
-        return "$name-application-$(get_version(m))-$(osname())-$(Sys.ARCH).tar.gz"
+        return "$name-application-$(Comonicon.get_version(m))-$(osname())-$(Sys.ARCH).tar.gz"
     else
-        return "$name-sysimg-$(get_version(m))-julia-$VERSION-$(osname())-$(Sys.ARCH).tar.gz"
+        return "$name-sysimg-$(Comonicon.get_version(m))-julia-$VERSION-$(osname())-$(Sys.ARCH).tar.gz"
     end
 end
 
