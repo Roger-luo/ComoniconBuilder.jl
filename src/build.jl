@@ -27,8 +27,8 @@ function build_sysimg(
         @info "cpu_target override to $cpu_target"
     end
 
-    exec_file = map(x -> pkgdir(m, x)::String, options.sysimg.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x)::String, options.sysimg.precompile.statements_file)
+    exec_file = String[pkgdir(m, x) for x in options.sysimg.precompile.execution_file]
+    stmt_file = String[pkgdir(m, x) for x in options.sysimg.precompile.statements_file]
 
     create_sysimage(
         nameof(m);
@@ -53,8 +53,8 @@ function build_application(m::Module, options::ComoniconOptions.Comonicon)
 
     @info "application options: " options.application
 
-    exec_file = map(x -> pkgdir(m, x)::String, options.application.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x)::String, options.application.precompile.statements_file)
+    exec_file = String[pkgdir(m, x) for x in options.application.precompile.execution_file]
+    stmt_file = String[pkgdir(m, x) for x in options.application.precompile.statements_file]
 
     create_app(
         pkgdir(m),
