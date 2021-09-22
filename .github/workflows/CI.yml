@@ -40,6 +40,7 @@ jobs:
           file: lcov.info
   test_build_project:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }} - build test
+    continue-on-error: ${{ matrix.nightly_build }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -51,6 +52,9 @@ jobs:
           - ubuntu-latest
         arch:
           - x64
+        include:
+          - version: nightly
+            nightly_build: true
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
