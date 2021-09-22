@@ -8,6 +8,7 @@ ComoniconBuilder = "0acea522-3a8c-4b93-9211-1fc67cbf95d9"
 ComoniconOptions = "a25bc8ac-9d24-42b2-8edd-3d267ec19fc5"
 ComoniconTestUtils = "53b67e40-53a7-4335-973f-e3e901fe4865"
 ComoniconTypes = "d0eb39ce-029e-40d1-add6-e32b3165f6a3"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [compat]
 julia = "1.6.1"
