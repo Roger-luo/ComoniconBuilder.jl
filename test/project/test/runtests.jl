@@ -45,7 +45,7 @@ if get(ENV, "TEST_BUILD_SYSIMG", false) == "true"
             install=ComoniconOptions.Install(
                 path=usr_dir,
             ),
-        sysimg=ComoniconOptions.SysImg(precompile=ComoniconOptions.Precompile(["deps/precompile_execution.jl"], []))
+        sysimg=ComoniconOptions.SysImg(precompile=ComoniconOptions.Precompile(["precompile_execution.jl"], []))
     )
         outpath = ComoniconBuilder.pkgdir(TestProject, "deps/lib/libtest.so")
         
@@ -64,7 +64,7 @@ if get(ENV, "TEST_BUILD_APP", false) == "true"
                 path=usr_dir,
             ),
         application=ComoniconOptions.Application(
-            precompile=ComoniconOptions.Precompile(["deps/precompile_execution.jl"], []),
+            precompile=ComoniconOptions.Precompile(["precompile_execution.jl"], []),
             incremental=true,
             filter_stdlibs=false,
             )

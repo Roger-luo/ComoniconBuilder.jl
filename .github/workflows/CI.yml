@@ -39,7 +39,7 @@ jobs:
         with:
           file: lcov.info
   test_build_project:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }} - build test
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
