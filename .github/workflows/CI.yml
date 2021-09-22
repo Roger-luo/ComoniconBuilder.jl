@@ -52,6 +52,7 @@ jobs:
           - ubuntu-latest
         arch:
           - x64
+        nightly_build: [false]
         include:
           - version: nightly
             nightly_build: true
