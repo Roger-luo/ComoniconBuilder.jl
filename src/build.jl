@@ -27,8 +27,8 @@ function build_sysimg(
         @info "cpu_target override to $cpu_target"
     end
 
-    exec_file = map(x -> pkgdir(m, x)::String, options.sysimg.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x)::String, options.sysimg.precompile.statements_file)
+    exec_file = String[pkgdir(m, x) for x in options.sysimg.precompile.execution_file]
+    stmt_file = String[pkgdir(m, x) for x in options.sysimg.precompile.statements_file]
 
     create_sysimage(
         nameof(m);
@@ -53,8 +53,8 @@ function build_application(m::Module, options::ComoniconOptions.Comonicon)
 
     @info "application options: " options.application
 
-    exec_file = map(x -> pkgdir(m, x), options.application.precompile.execution_file)
-    stmt_file = map(x -> pkgdir(m, x), options.application.precompile.statements_file)
+    exec_file = String[pkgdir(m, x) for x in options.application.precompile.execution_file]
+    stmt_file = String[pkgdir(m, x) for x in options.application.precompile.statements_file]
 
     create_app(
         pkgdir(m),
@@ -178,9 +178,9 @@ end
 
 function tarball_name(m::Module, name::String; application::Bool = false)
     if application
-        return "$name-application-$(get_version(m))-$(osname())-$(Sys.ARCH).tar.gz"
+        return "$name-application-$(Comonicon.get_version(m))-$(osname())-$(Sys.ARCH).tar.gz"
     else
-        return "$name-sysimg-$(get_version(m))-julia-$VERSION-$(osname())-$(Sys.ARCH).tar.gz"
+        return "$name-sysimg-$(Comonicon.get_version(m))-julia-$VERSION-$(osname())-$(Sys.ARCH).tar.gz"
     end
 end
 

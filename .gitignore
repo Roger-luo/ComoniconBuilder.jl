@@ -4,5 +4,6 @@
 /Manifest.toml
 test/project/Manifest.toml
 test/project/deps
+test/project/build
 /docs/build/
 .vscode
