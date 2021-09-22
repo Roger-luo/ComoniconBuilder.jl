@@ -55,6 +55,8 @@ jobs:
         nightly_build: [false]
         include:
           - version: nightly
+            os: ubuntu-latest
+            arch: x64
             nightly_build: true
     steps:
       - uses: actions/checkout@v2
