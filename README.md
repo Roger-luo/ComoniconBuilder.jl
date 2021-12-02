@@ -5,4 +5,4 @@
 [![Build Status](https://github.com/comonicon/ComoniconBuilder.jl/workflows/CI/badge.svg)](https://github.com/comonicon/ComoniconBuilder.jl/actions)
 [![Coverage](https://codecov.io/gh/comonicon/ComoniconBuilder.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/comonicon/ComoniconBuilder.jl)
 
-This package is not inside Comonicon
+This package is now inside Comonicon
